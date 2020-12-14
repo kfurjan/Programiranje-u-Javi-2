@@ -1,27 +1,54 @@
 package hr.algebra.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 /**
  *
  * @author efurkev
  */
-public class GameEngine {
+public class GameEngine implements Serializable {
+
+    private static final long serialVersionUID = 4L;
 
     private static final int FORWARD = 5;
     private static final int CANVAS_HEIGHT = 560;
     private static final int CANVAS_WIDTH = 1160;
     private static final String EXCEPTION_MESSAGE = "Snake is out of bounds or hit itself!";
 
+    private Player firstPlayer;
+    private Player secondPlayer;
+
     public GameEngine() {
     }
 
-    public void draw(GraphicsContext gc, Player player, KeyCode keyCode) throws Exception {
+    public GameEngine(Player firstPlayer) {
+        this.firstPlayer = firstPlayer;
+    }
 
-        gc.setStroke(player.getSnake().getColor());
+    public GameEngine(Player firstPlayer, Player secondPlayer) {
+        this(firstPlayer);
+        this.secondPlayer = secondPlayer;
+    }
+
+    public Player getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public Player getSecondPlayer() {
+        return secondPlayer;
+    }
+
+    public void draw(GraphicsContext gc, Player player, KeyCode keyCode, Color color) throws Exception {
+
+        gc.setStroke(color);
         gc.setLineWidth(player.getSnake().getLineWidth());
 
         List<Position> positions = player.getSnake().getPositions();
@@ -90,5 +117,26 @@ public class GameEngine {
             default:
                 return Optional.empty();
         }
+    }
+
+    public void drawAllPositions(GraphicsContext gc, Player player, Color color) {
+        gc.setStroke(color);
+        gc.setLineWidth(player.getSnake().getLineWidth());
+        List<Position> positions = player.getSnake().getPositions();
+
+        for (int i = 1; i < positions.size(); i++) {
+            gc.strokeLine(positions.get(i - 1).getX(), positions.get(i - 1).getY(),
+                    positions.get(i).getX(), positions.get(i).getY());
+        }
+    }
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeObject(firstPlayer);
+        oos.writeObject(secondPlayer);
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        this.firstPlayer = (Player) ois.readObject();
+        this.secondPlayer = (Player) ois.readObject();
     }
 }

@@ -1,10 +1,17 @@
 package hr.algebra.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  *
  * @author efurkev
  */
-public class Position {
+public class Position implements Serializable {
+
+    private static final long serialVersionUID = 2L;
 
     private double x;
     private double y;
@@ -63,4 +70,20 @@ public class Position {
         return true;
     }
 
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeDouble(x);
+        oos.writeDouble(y);
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        this.x = ois.readDouble();
+        this.y = ois.readDouble();
+    }
+
+    @Override
+    public String toString() {
+        return "{" +  x + ", " + y + '}';
+    }
+    
+    
 }

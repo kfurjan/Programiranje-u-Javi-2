@@ -1,25 +1,29 @@
 package hr.algebra.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.paint.Color;
 
 /**
  *
  * @author efurkev
  */
-public class Snake {
+public class Snake implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int lineWidth;
-    private Color color;
     private List<Position> positions;
 
-    public Snake(int lineWidth, Color color) {
+    public Snake(int lineWidth) {
         this.lineWidth = lineWidth;
-        this.color = color;
     }
 
-    public Snake(int lineWidth, Color color, List<Position> positions) {
-        this(lineWidth, color);
+    public Snake(int lineWidth, List<Position> positions) {
+        this(lineWidth);
         this.positions = positions;
     }
 
@@ -29,14 +33,6 @@ public class Snake {
 
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
     public List<Position> getPositions() {
@@ -49,5 +45,15 @@ public class Snake {
 
     public boolean hitItself(Position position) {
         return positions.contains(position);
+    }
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        oos.writeInt(lineWidth);
+        oos.writeObject(new ArrayList(positions));
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        this.lineWidth = ois.readInt();
+        this.positions = (List<Position>) ois.readObject();
     }
 }

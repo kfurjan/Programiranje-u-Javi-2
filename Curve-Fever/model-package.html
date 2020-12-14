@@ -1,0 +1,155 @@
+<html>
+
+<h1>GameEngine</h1></br>
+<h2>package hr.algebra.model</h2></br>
+
+<h3>public GameEngine</h3></br>
+<h3>extends java.lang.Object</h3></br>
+<h3>implements java.io.Serializable</h3></br>
+
+<p>private static final long hr.algebra.model.GameEngine.serialVersionUID<p></br>
+<p>private static final int hr.algebra.model.GameEngine.FORWARD<p></br>
+<p>private static final int hr.algebra.model.GameEngine.CANVAS_HEIGHT<p></br>
+<p>private static final int hr.algebra.model.GameEngine.CANVAS_WIDTH<p></br>
+<p>private static final java.lang.String hr.algebra.model.GameEngine.EXCEPTION_MESSAGE<p></br>
+<p>private hr.algebra.model.Player hr.algebra.model.GameEngine.firstPlayer<p></br>
+<p>private hr.algebra.model.Player hr.algebra.model.GameEngine.secondPlayer<p></br>
+
+<p>private void readObject(java.io.ObjectInputStream arg0)<p></br>
+<p>throws class java.io.IOException, class java.lang.ClassNotFoundException</p></br>
+<p>private void writeObject(java.io.ObjectOutputStream arg0)<p></br>
+<p>throws class java.io.IOException</p></br>
+<p>public void draw(javafx.scene.canvas.GraphicsContext arg0, hr.algebra.model.Player arg1, javafx.scene.input.KeyCode arg2, javafx.scene.paint.Color arg3)<p></br>
+<p>throws class java.lang.Exception</p></br>
+<p>public class hr.algebra.model.Player getFirstPlayer()<p></br>
+
+<p>public void drawAllPositions(javafx.scene.canvas.GraphicsContext arg0, hr.algebra.model.Player arg1, javafx.scene.paint.Color arg2)<p></br>
+
+<p>private class java.util.Optional calculateNextPostion(javafx.scene.input.KeyCode arg0, hr.algebra.model.Player arg1, hr.algebra.model.Position arg2)<p></br>
+
+<p>public class hr.algebra.model.Player getSecondPlayer()<p></br>
+
+
+<p>public hr.algebra.model.GameEngine(hr.algebra.model.Player arg0, hr.algebra.model.Player arg1)<p></br>
+
+<p>public hr.algebra.model.GameEngine(hr.algebra.model.Player arg0)<p></br>
+
+<p>public hr.algebra.model.GameEngine()<p></br>
+</br><hr></br>
+
+<h1>Orientation</h1></br>
+<h2>package hr.algebra.model</h2></br>
+
+<h3>public final Orientation</h3></br>
+<h3>extends java.lang.Enum java.lang.Object</h3></br>
+
+<p>public static final hr.algebra.model.Orientation hr.algebra.model.Orientation.HORIZONTAL_RIGHT<p></br>
+<p>public static final hr.algebra.model.Orientation hr.algebra.model.Orientation.HORIZONTAL_LEFT<p></br>
+<p>public static final hr.algebra.model.Orientation hr.algebra.model.Orientation.VERTICAL_TOP<p></br>
+<p>public static final hr.algebra.model.Orientation hr.algebra.model.Orientation.VERTICAL_BOTTOM<p></br>
+<p>private static final hr.algebra.model.Orientation[] hr.algebra.model.Orientation.$VALUES<p></br>
+
+<p>public static class [Lhr.algebra.model.Orientation; values()<p></br>
+
+<p>public static class hr.algebra.model.Orientation valueOf(java.lang.String arg0)<p></br>
+
+
+<p>private hr.algebra.model.Orientation(java.lang.String arg0, int arg1)<p></br>
+</br><hr></br>
+
+<h1>Player</h1></br>
+<h2>package hr.algebra.model</h2></br>
+
+<h3>public Player</h3></br>
+<h3>extends java.lang.Object</h3></br>
+<h3>implements java.io.Serializable</h3></br>
+
+<p>private static final long hr.algebra.model.Player.serialVersionUID<p></br>
+<p>private hr.algebra.model.Snake hr.algebra.model.Player.snake<p></br>
+<p>private hr.algebra.model.Orientation hr.algebra.model.Player.orientation<p></br>
+
+<p>private void readObject(java.io.ObjectInputStream arg0)<p></br>
+<p>throws class java.io.IOException, class java.lang.ClassNotFoundException</p></br>
+<p>private void writeObject(java.io.ObjectOutputStream arg0)<p></br>
+<p>throws class java.io.IOException</p></br>
+<p>public class hr.algebra.model.Snake getSnake()<p></br>
+
+<p>public class hr.algebra.model.Orientation getOrientation()<p></br>
+
+<p>public void setOrientation(hr.algebra.model.Orientation arg0)<p></br>
+
+<p>public void setSnake(hr.algebra.model.Snake arg0)<p></br>
+
+
+<p>public hr.algebra.model.Player(hr.algebra.model.Snake arg0, hr.algebra.model.Orientation arg1)<p></br>
+
+<p>public hr.algebra.model.Player()<p></br>
+</br><hr></br>
+
+<h1>Position</h1></br>
+<h2>package hr.algebra.model</h2></br>
+
+<h3>public Position</h3></br>
+<h3>extends java.lang.Object</h3></br>
+<h3>implements java.io.Serializable</h3></br>
+
+<p>private static final long hr.algebra.model.Position.serialVersionUID<p></br>
+<p>private double hr.algebra.model.Position.x<p></br>
+<p>private double hr.algebra.model.Position.y<p></br>
+
+<p>public boolean equals(java.lang.Object arg0)<p></br>
+
+<p>public class java.lang.String toString()<p></br>
+
+<p>public int hashCode()<p></br>
+
+<p>private void readObject(java.io.ObjectInputStream arg0)<p></br>
+<p>throws class java.io.IOException, class java.lang.ClassNotFoundException</p></br>
+<p>private void writeObject(java.io.ObjectOutputStream arg0)<p></br>
+<p>throws class java.io.IOException</p></br>
+<p>public double getX()<p></br>
+
+<p>public double getY()<p></br>
+
+<p>public void setX(double arg0)<p></br>
+
+<p>public void setY(double arg0)<p></br>
+
+<p>public boolean isInBounds(int arg0, int arg1)<p></br>
+
+
+<p>public hr.algebra.model.Position(double arg0, double arg1)<p></br>
+</br><hr></br>
+
+<h1>Snake</h1></br>
+<h2>package hr.algebra.model</h2></br>
+
+<h3>public Snake</h3></br>
+<h3>extends java.lang.Object</h3></br>
+<h3>implements java.io.Serializable</h3></br>
+
+<p>private static final long hr.algebra.model.Snake.serialVersionUID<p></br>
+<p>private int hr.algebra.model.Snake.lineWidth<p></br>
+<p>private java.util.List hr.algebra.model.Snake.positions<p></br>
+
+<p>private void readObject(java.io.ObjectInputStream arg0)<p></br>
+<p>throws class java.io.IOException, class java.lang.ClassNotFoundException</p></br>
+<p>private void writeObject(java.io.ObjectOutputStream arg0)<p></br>
+<p>throws class java.io.IOException</p></br>
+<p>public int getLineWidth()<p></br>
+
+<p>public void setLineWidth(int arg0)<p></br>
+
+<p>public interface java.util.List getPositions()<p></br>
+
+<p>public boolean hitItself(hr.algebra.model.Position arg0)<p></br>
+
+<p>public void setPositions(java.util.List<hr.algebra.model.Position> arg0)<p></br>
+
+
+<p>public hr.algebra.model.Snake(int arg0)<p></br>
+
+<p>public hr.algebra.model.Snake(int arg0, java.util.List<hr.algebra.model.Position> arg1)<p></br>
+</br><hr></br>
+
+</html>

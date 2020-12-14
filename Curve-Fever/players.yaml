@@ -1,0 +1,8 @@
+snake:
+  lineWidth: 5
+  color: RED
+  positions:
+    - position:
+        x: 10
+        y: 250
+orientation: HORIZONTAL_RIGHT
