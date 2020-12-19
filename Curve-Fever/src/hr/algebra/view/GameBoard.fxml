@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -34,36 +36,53 @@
             <Insets />
          </GridPane.margin>
       </StackPane>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="borderpane-buttons" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <center>
-            <Button mnemonicParsing="false" onAction="#resetGame" text="Reset game" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#resetGame" styleClass="button-danger" text="Reset game" textAlignment="CENTER" BorderPane.alignment="CENTER" />
          </center>
          <right>
-            <Button mnemonicParsing="false" onAction="#exitGame" text="Save and exit" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#exitGame" styleClass="button-danger" text="Save and exit" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="125.0" />
                </BorderPane.margin>
             </Button>
          </right>
          <bottom>
-            <Button mnemonicParsing="false" onAction="#createJavaDocs" text="Create documentation" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#createJavaDocs" styleClass="button-docs" text="Create documentation" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="50.0" />
                </BorderPane.margin>
             </Button>
          </bottom>
       </BorderPane>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+      <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="borderpane-buttons" GridPane.rowIndex="3">
          <center>
-            <Button mnemonicParsing="false" onAction="#startGame" text="Start game" BorderPane.alignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#startGame" styleClass="button-game" text="Start game" BorderPane.alignment="CENTER" />
          </center>
          <right>
-            <Button mnemonicParsing="false" onAction="#loadGame" text="Load game" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#loadGame" styleClass="button-game" text="Load game" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets right="125.0" />
                </BorderPane.margin>
             </Button>
          </right>
+         <top>
+            <RadioButton fx:id="rbPlayerOne" mnemonicParsing="false" selected="true" text="Player 1" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="25.0" />
+               </BorderPane.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="players" />
+               </toggleGroup>
+            </RadioButton>
+         </top>
+         <bottom>
+            <RadioButton fx:id="rbPlayerTwo" mnemonicParsing="false" text="Player 2" toggleGroup="$players" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="25.0" />
+               </BorderPane.margin>
+            </RadioButton>
+         </bottom>
       </BorderPane>
    </children>
 </GridPane>

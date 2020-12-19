@@ -47,6 +47,10 @@ public class Snake implements Serializable {
         return positions.contains(position);
     }
 
+    public boolean hitAnotherSnake(Position position, List<Position> otherPositions) {
+        return otherPositions.contains(position);
+    }
+
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.writeInt(lineWidth);
         oos.writeObject(new ArrayList(positions));

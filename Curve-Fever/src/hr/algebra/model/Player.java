@@ -15,13 +15,15 @@ public class Player implements Serializable {
 
     private Snake snake;
     private Orientation orientation;
+    private boolean crashed = false;
 
     public Player(Snake snake, Orientation orientation) {
         this.snake = snake;
         this.orientation = orientation;
     }
 
-    public Player() {}
+    public Player() {
+    }
 
     public Snake getSnake() {
         return snake;
@@ -37,6 +39,14 @@ public class Player implements Serializable {
 
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+    }
+
+    public boolean isCrashed() {
+        return crashed;
+    }
+
+    public void setCrashed(boolean hasCrashed) {
+        this.crashed = hasCrashed;
     }
 
     private void writeObject(ObjectOutputStream oos) throws IOException {

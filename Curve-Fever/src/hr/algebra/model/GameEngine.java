@@ -21,7 +21,7 @@ public class GameEngine implements Serializable {
     private static final int FORWARD = 5;
     private static final int CANVAS_HEIGHT = 560;
     private static final int CANVAS_WIDTH = 1160;
-    private static final String EXCEPTION_MESSAGE = "Snake is out of bounds or hit itself!";
+    private static final String EXCEPTION_MESSAGE = "Snake is out of bounds or has crashed!";
 
     private Player firstPlayer;
     private Player secondPlayer;
@@ -119,7 +119,7 @@ public class GameEngine implements Serializable {
         }
     }
 
-    public void drawAllPositions(GraphicsContext gc, Player player, Color color) {
+    public void drawAllPositions(GraphicsContext gc, Player player, Color color) throws Exception {
         gc.setStroke(color);
         gc.setLineWidth(player.getSnake().getLineWidth());
         List<Position> positions = player.getSnake().getPositions();
