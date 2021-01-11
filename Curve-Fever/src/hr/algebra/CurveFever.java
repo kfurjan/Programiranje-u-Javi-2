@@ -1,6 +1,12 @@
 package hr.algebra;
 
+import hr.algebra.factory.RepositoryFactory;
+import hr.algebra.repository.FileRepository;
+import hr.algebra.repository.Repository;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,6 +31,15 @@ public class CurveFever extends Application {
 
         primaryStage.setTitle(TITLE);
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(e -> {
+            try {
+                Repository repository = RepositoryFactory.getRepository(FileRepository.class.getName());
+                repository.clearData();
+                System.exit(0);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException ex) {
+                Logger.getLogger(CurveFever.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         primaryStage.show();
     }
 

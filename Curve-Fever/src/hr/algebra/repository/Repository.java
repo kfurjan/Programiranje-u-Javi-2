@@ -1,6 +1,8 @@
 package hr.algebra.repository;
 
 import hr.algebra.model.Player;
+import hr.algebra.model.PlayerType;
+import hr.algebra.model.RmiType;
 import javafx.scene.paint.Color;
 
 /**
@@ -9,6 +11,8 @@ import javafx.scene.paint.Color;
  */
 public interface Repository {
 
+    public PlayerType getPlayerType();
+
     public Player getFirstPlayer();
 
     public Player getSecondPlayer();
@@ -16,4 +20,8 @@ public interface Repository {
     public Color getFirstPlayerColor();
 
     public Color getSecondPlayerColor();
+
+    public RmiType getRmiType();
+
+    public void clearData();
 }

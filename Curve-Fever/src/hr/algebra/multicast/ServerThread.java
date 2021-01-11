@@ -1,6 +1,7 @@
 package hr.algebra.multicast;
 
 import hr.algebra.controller.GameBoardController;
+import hr.algebra.model.PlayerType;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -40,7 +41,7 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-        String PORT = controller.getRbPlayerOne().isSelected()
+        String PORT = controller.getPlayerType() == PlayerType.PLAYER_1
                 ? FIRST_PLAYER_PORT : SECOND_PLAYER_PORT;
 
         try (DatagramSocket server = new DatagramSocket()) {

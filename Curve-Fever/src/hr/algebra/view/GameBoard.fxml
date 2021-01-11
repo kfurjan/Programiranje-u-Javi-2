@@ -3,8 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -43,7 +41,7 @@
          <right>
             <Button mnemonicParsing="false" onAction="#exitGame" styleClass="button-danger" text="Save and exit" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets right="125.0" />
+                  <Insets right="150.0" />
                </BorderPane.margin>
             </Button>
          </right>
@@ -62,26 +60,16 @@
          <right>
             <Button mnemonicParsing="false" onAction="#loadGame" styleClass="button-game" text="Load game" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets right="125.0" />
+                  <Insets right="150.0" />
                </BorderPane.margin>
             </Button>
          </right>
-         <top>
-            <RadioButton fx:id="rbPlayerOne" mnemonicParsing="false" selected="true" text="Player 1" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets top="25.0" />
-               </BorderPane.margin>
-               <toggleGroup>
-                  <ToggleGroup fx:id="players" />
-               </toggleGroup>
-            </RadioButton>
-         </top>
          <bottom>
-            <RadioButton fx:id="rbPlayerTwo" mnemonicParsing="false" text="Player 2" toggleGroup="$players" BorderPane.alignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#openChat" styleClass="button-game" text="Open chat" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets bottom="25.0" />
+                  <Insets bottom="50.0" />
                </BorderPane.margin>
-            </RadioButton>
+            </Button>
          </bottom>
       </BorderPane>
    </children>

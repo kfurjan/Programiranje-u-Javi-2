@@ -3,6 +3,7 @@ package hr.algebra.multicast;
 import hr.algebra.controller.GameBoardController;
 import hr.algebra.model.GameEngine;
 import hr.algebra.model.Player;
+import hr.algebra.model.PlayerType;
 import hr.algebra.model.Position;
 import hr.algebra.repository.Repository;
 import java.io.FileInputStream;
@@ -57,7 +58,7 @@ public class ClientThread extends Thread {
 
     @Override
     public void run() {
-        String PORT = controller.getRbPlayerOne().isSelected()
+        String PORT = controller.getPlayerType() == PlayerType.PLAYER_1
                 ? SECOND_PLAYER_PORT : FIRST_PLAYER_PORT;
 
         try (MulticastSocket client = new MulticastSocket(Integer.valueOf(PROPERTIES.getProperty(PORT)))) {
