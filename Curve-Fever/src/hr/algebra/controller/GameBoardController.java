@@ -9,6 +9,10 @@ import hr.algebra.multicast.ClientThread;
 import hr.algebra.multicast.ServerThread;
 import hr.algebra.repository.FileRepository;
 import hr.algebra.repository.Repository;
+import hr.algebra.rmi.ChatClient;
+import hr.algebra.rmi.ChatServer;
+import hr.algebra.threads.ClockThread;
+import hr.algebra.utils.DOMUtils;
 import hr.algebra.utils.FileUtils;
 import hr.algebra.utils.MessageUtils;
 import hr.algebra.utils.ReflectionUtils;
@@ -22,6 +26,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -30,16 +37,24 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
@@ -64,8 +79,6 @@ public class GameBoardController implements Initializable {
     private static final double INTERVAL = 0.25; // seconds
 
     public String winner = null;
-    private static final String CLIENT = "Client";
-    private static final String SERVER = "Server";
     private static final String FIRST = "FIRST";
     private static final String SECOND = "SECOND";
     private static final String JAVA = "java";
@@ -79,6 +92,31 @@ public class GameBoardController implements Initializable {
     private static final String PLAYER_2_WON = "Player 2 won";
     private static final String PLAYER_2_WON_DESC = "Player 2 has won the game";
 
+    private final String TIME_FORMAT = "HH:mm:ss";
+    private static final String MESSAGE_FORMAT = "%s (%s): %s";
+    private static final String DATE_TIME_FORMAT = "dd. MMM. yyyy HH:mm:ss";
+    private static final String SERVER_NAME = "Server";
+    private static final String CLIENT_NAME = "Client";
+    private static final int MESSAGE_LENGTH = 78;
+    private static final int FONT_SIZE = 15;
+
+    private RmiType rmiType;
+    private ObservableList<Node> messages;
+
+    private ChatServer chatServer;
+    private ChatClient chatClient;
+
+    @FXML
+    private ScrollPane spContainer;
+    @FXML
+    private VBox vbMessages;
+    @FXML
+    private TextField tfMessage;
+    @FXML
+    private Button btnSend;
+    @FXML
+    private Label lblClock;
+
     /**
      * Initializes the controller class.
      */
@@ -86,6 +124,7 @@ public class GameBoardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initRepository();
         initGraphicsContext();
+        startClockThread();
     }
 
     private void initRepository() {
@@ -98,6 +137,10 @@ public class GameBoardController implements Initializable {
 
     private void initGraphicsContext() {
         gc = canvas.getGraphicsContext2D();
+    }
+
+    private void startClockThread() {
+        new ClockThread(this).start();
     }
 
     @FXML
@@ -114,9 +157,11 @@ public class GameBoardController implements Initializable {
             switch (playerType) {
                 case PLAYER_1:
                     gameEngine = new GameEngine(repository.getFirstPlayer(), null);
+                    playerType = PlayerType.PLAYER_1;
                     break;
                 case PLAYER_2:
                     gameEngine = new GameEngine(null, repository.getSecondPlayer());
+                    playerType = PlayerType.PLAYER_2;
                     break;
                 default:
             }
@@ -343,29 +388,139 @@ public class GameBoardController implements Initializable {
 
     @FXML
     private void openChat() throws IOException {
-        RmiType rmiType = repository.getRmiType();
+        rmiType = repository.getRmiType();
         if (rmiType != null) {
             switch (rmiType) {
                 case SERVER:
-                    showWindow(SERVER);
+                    initChatServer();
                     break;
                 case CLIENT:
-                    showWindow(CLIENT);
+                    initChatClient();
                     break;
                 default:
             }
         }
     }
 
-    private void showWindow(String name) throws IOException {
-        Parent root = FXMLLoader.load(getClass()
-                .getResource(String.format("/hr/algebra/view/%s.fxml", name)));
+    public void initChatServer() {
+        chatServer = new ChatServer(this);
+        messages = FXCollections.observableArrayList();
+        Bindings.bindContentBidirectional(messages, vbMessages.getChildren());
+        tfMessage.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue.length() >= MESSAGE_LENGTH) {
+                        ((StringProperty) observable).setValue(oldValue);
+                    }
+                }
+        );
+    }
 
-        Scene scene = new Scene(root, 750, 400);
-        Stage stage = new Stage();
+    public void initChatClient() {
+        chatClient = new ChatClient(this);
+        messages = FXCollections.observableArrayList();
+        Bindings.bindContentBidirectional(messages, vbMessages.getChildren());
+        tfMessage.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue.length() >= MESSAGE_LENGTH) {
+                        ((StringProperty) observable).setValue(oldValue);
+                    }
+                }
+        );
+    }
 
-        stage.setTitle(name);
-        stage.setScene(scene);
-        stage.show();
+    @FXML
+    private void saveDOM() {
+        if (playerType != null) {
+            switch (playerType) {
+                case PLAYER_1:
+                    DOMUtils.savePlayer(gameEngine.getFirstPlayer());
+                    playerType = PlayerType.PLAYER_1;
+                    break;
+                case PLAYER_2:
+                    DOMUtils.savePlayer(gameEngine.getSecondPlayer());
+                    break;
+                default:
+            }
+        }
+        resetGame();
+    }
+
+    @FXML
+    private void loadDOM() {
+        try {
+            if (playerType != null) {
+                switch (playerType) {
+                    case PLAYER_1:
+                        gameEngine = new GameEngine(DOMUtils.loadPlayer(), null);
+                        gameEngine.drawAllPositions(gc, gameEngine.getFirstPlayer(), repository.getFirstPlayerColor());
+                        break;
+                    case PLAYER_2:
+                        gameEngine = new GameEngine(null, DOMUtils.loadPlayer());
+                        gameEngine.drawAllPositions(gc, gameEngine.getSecondPlayer(), repository.getSecondPlayerColor());
+                        break;
+                    default:
+                }
+                initTimeline();
+                initSceneEventHandler();
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(GameBoardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void send(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            sendMessage();
+        }
+    }
+
+    @FXML
+    private void sendMessage() {
+        if (rmiType != null) {
+            switch (rmiType) {
+                case SERVER:
+                    if (tfMessage.getText().trim().length() > 0) {
+                        chatServer.sendMessage(tfMessage.getText().trim());
+                        addMessage(tfMessage.getText().trim(), SERVER_NAME, Color.BLACK);
+                        tfMessage.clear();
+                    }
+                    break;
+                case CLIENT:
+                    if (tfMessage.getText().trim().length() > 0) {
+                        chatClient.sendMessage(tfMessage.getText().trim());
+                        addMessage(tfMessage.getText().trim(), CLIENT_NAME, Color.BLACK);
+                        tfMessage.clear();
+                    }
+                    break;
+                default:
+            }
+        }
+    }
+
+    private void addMessage(String message, String name, Color color) {
+        Label label = new Label();
+        label.setFont(new Font(FONT_SIZE));
+        label.setTextFill(color);
+        label.setText(String.format(MESSAGE_FORMAT, LocalTime.now().format(DateTimeFormatter.ofPattern(TIME_FORMAT)), name, message));
+        messages.add(label);
+        moveScrollPane();
+    }
+
+    private void moveScrollPane() {
+        spContainer.applyCss();
+        spContainer.layout();
+        spContainer.setVvalue(1D);
+    }
+
+    public void postMessage(String message, String name, Color color) {
+        Platform.runLater(() -> addMessage(message, name, color));
+    }
+
+    public void updateTime() {
+        lblClock.setText(LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
     }
 }

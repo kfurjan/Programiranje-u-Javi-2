@@ -84,6 +84,4 @@ public class Position implements Serializable {
     public String toString() {
         return "{" +  x + ", " + y + '}';
     }
-    
-    
 }

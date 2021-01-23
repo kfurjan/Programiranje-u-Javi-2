@@ -18,6 +18,8 @@ public class Snake implements Serializable {
     private int lineWidth;
     private List<Position> positions;
 
+    public Snake() {}
+
     public Snake(int lineWidth) {
         this.lineWidth = lineWidth;
     }
@@ -60,4 +62,9 @@ public class Snake implements Serializable {
         this.lineWidth = ois.readInt();
         this.positions = (List<Position>) ois.readObject();
     }
+
+    @Override
+    public String toString() {
+        return "Snake{" + "lineWidth=" + lineWidth + ", positions=" + positions + '}';
+    } 
 }

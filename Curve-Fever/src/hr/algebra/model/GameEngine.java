@@ -19,7 +19,7 @@ public class GameEngine implements Serializable {
     private static final long serialVersionUID = 4L;
 
     private static final int FORWARD = 5;
-    private static final int CANVAS_HEIGHT = 560;
+    private static final int CANVAS_HEIGHT = 400;
     private static final int CANVAS_WIDTH = 1160;
     private static final String EXCEPTION_MESSAGE = "Snake is out of bounds or has crashed!";
 

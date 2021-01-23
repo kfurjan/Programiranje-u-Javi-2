@@ -1,6 +1,6 @@
 package hr.algebra.rmi;
 
-import hr.algebra.controller.RmiServertController;
+import hr.algebra.controller.GameBoardController;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -26,10 +26,10 @@ public final class ChatServer {
     private ChatService client;
     private Registry registry;
 
-    private final RmiServertController chatController;
+    private final GameBoardController controller;
 
-    public ChatServer(RmiServertController chatController) {
-        this.chatController = chatController;
+    public ChatServer(GameBoardController chatController) {
+        this.controller = chatController;
         publishServer();
         waitForClient();
     }
@@ -48,7 +48,7 @@ public final class ChatServer {
 
             @Override
             public void send(String message) throws RemoteException {
-                chatController.postMessage(message, getName(), getColor());
+                controller.postMessage(message, getName(), getColor());
             }
         };
 

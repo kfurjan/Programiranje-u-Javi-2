@@ -1,7 +1,7 @@
 package hr.algebra.rmi;
 
 import com.sun.jndi.rmi.registry.RegistryContextFactory;
-import hr.algebra.controller.RmiClienttController;
+import hr.algebra.controller.GameBoardController;
 import hr.algebra.jndi.InitialDirContextCloseable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -32,10 +32,10 @@ public final class ChatClient {
     private ChatService server;
     private Registry registry;
 
-    private final RmiClienttController chatController;
+    private final GameBoardController controller;
 
-    public ChatClient(RmiClienttController chatController) {
-        this.chatController = chatController;
+    public ChatClient(GameBoardController chatController) {
+        this.controller = chatController;
         publishClient();
         fetchServer();
     }
@@ -54,7 +54,7 @@ public final class ChatClient {
 
             @Override
             public void send(String message) throws RemoteException {
-                chatController.postMessage(message, getName(), getColor());
+                controller.postMessage(message, getName(), getColor());
             }
         };
 

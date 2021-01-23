@@ -58,4 +58,9 @@ public class Player implements Serializable {
         this.snake = (Snake) ois.readObject();
         this.orientation = (Orientation) ois.readObject();
     }
+
+    @Override
+    public String toString() {
+        return "Player{" + "snake=" + snake + ", orientation=" + orientation + ", crashed=" + crashed + '}';
+    }    
 }
